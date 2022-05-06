@@ -1,0 +1,17 @@
+{% extends "layout.njk" %}
+{% block  content %}
+    <div class="container-md">
+    {% for post in posts %}
+        <div class="card" style="margin-top: 1rem;">
+            <div class="card-header">
+                {{ post.user }}
+            </div>
+            <div class="card-body">
+              <h5 class="card-title">{{ post.heading }}</h5>
+              <p class="card-text">{{ post.description }}</p>
+              <a href="#" class="btn btn-primary">Read full post</a>
+            </div>
+          </div>
+    {% endfor %}
+    </div>
+{% endblock %}
