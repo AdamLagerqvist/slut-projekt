@@ -3,6 +3,16 @@ var session = require('express-session');
 var bcrypt = require('bcrypt');
 const pool = require('../database');
 var router = express.Router();
+
+var linkify = require('linkify-it')();
+
+var md = require('markdown-it')({
+    html: true,
+    linkify: true,
+    typographer: true
+  });
+md.linkify.set({ fuzzyEmail: false });  // disables converting email to link
+
 var responses = [
     "Wrong username or password.",
     "Username already exists",
@@ -118,6 +128,23 @@ router.post('/post', async function (req, res, next) {
         .catch(err => {
             console.log(err)
             res.status(500).redirect("/secret");
+        });
+});
+
+router.get('/fullPost/:id', async function (req, res, next) {
+    
+    console.log(req.params)
+
+    await pool.promise()
+        .query('SELECT * FROM admlat_posts INNER JOIN admlat_login ON admlat_posts.uid=admlat_login.id WHERE admlat_posts.id = ?', [req.params.id])
+        .then(([rows, fields]) => {
+            console.log(rows[0])
+            let result = md.renderInline(rows[0].full_text)
+            res.render('fullPost.njk', { markdownHtml: result})
+        })
+        .catch(err => {
+            console.log(err)
+            return;
         });
 });
 

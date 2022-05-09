@@ -13,6 +13,8 @@
     "dotenv": "^16.0.0",
     "express": "~4.16.1",
     "express-session": "^1.17.2",
+    "linkify-it": "^4.0.1",
+    "markdown-it": "^13.0.1",
     "morgan": "~1.9.1",
     "mysql2": "^2.3.3",
     "node-sass-middleware": "0.11.0",

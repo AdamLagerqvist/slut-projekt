@@ -12,6 +12,11 @@ var indexRouter = require('./routes/index');
 
 var app = express();
 
+var linkify = require('linkify-it')();
+
+var MarkdownIt = require('markdown-it'), md = new MarkdownIt();
+md.linkify.set({ fuzzyEmail: false });  // disables converting email to link
+
 nunjucks.configure('views', {
   autoescape: true,
   express: app
