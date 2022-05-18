@@ -32,7 +32,9 @@
                 {% endif %}
             </ul>
             {% if user %}
-                <form class="d-flex" action="/logout" method="post">
+                <form class="d-flex align-middle" action="/logout" method="post">
+                    <img src="https://avatars.dicebear.com/api/miniavs/{{user}}.svg" alt="profile picture" width="50"
+                    height="50" style="width: 3rem; height: 2.5rem;">
                     <button class="btn btn-primary" type="submit">Logout</button>
                 </form>
             {% endif %}

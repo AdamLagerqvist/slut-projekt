@@ -1,8 +1,18 @@
 {% extends "layout.njk" %}
-{% block  content %}
-    <div style="margin-top: 1rem; margin-left: 20vw; margin-right: 20vw; border-radius: 1rem; background-color: rgb(237, 237, 217);">
-        <div style="margin: 1rem;">
-            {{ markdownHtml }}
-        </div>
+{% block content %}
+<div class="container-md d-flex flex-column min-vh-100" style="max-width: 60vw;">
+    <div style="margin-bottom: 1rem;">
+        {{ markdownHtml | safe }}
     </div>
+</div>
+<footer class="container-md" style="max-width: 60vwn; margin-top: auto;">
+    <div class="d-flex justify-content-between container-md" style="max-width: 60vw;">
+        {% if previd %}
+        <a href="/fullPost/{{ previd }}" class="btn btn-primary">prev. post by {{ user }}</a>
+        {% endif %}
+        {% if nextid %}
+        <a href="/fullPost/{{ nextid }}" class="btn btn-primary">next post by {{ user }}</a>
+        {% endif %}
+    </div>
+</footer>
 {% endblock %}

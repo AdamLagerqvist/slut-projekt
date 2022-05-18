@@ -6,11 +6,17 @@ var router = express.Router();
 
 var linkify = require('linkify-it')();
 
-var md = require('markdown-it')({
+var md = require('markdown-it')()
+            .disable([ 'link', 'image' ])
+            .enable([ 'link' ])
+            .enable('image');
+
+md = require('markdown-it')({
     html: true,
     linkify: true,
     typographer: true
-  });
+});
+
 md.linkify.set({ fuzzyEmail: false });  // disables converting email to link
 
 var responses = [
@@ -60,7 +66,6 @@ router.post('/login', async function (req, res, next) {
                     if (result) {
                         req.session.user = user.id;
                         req.session.username = username;
-                        console.log(req.session);
 
                         return res.redirect("/secret");
                     } else {
@@ -81,7 +86,6 @@ router.get('/test', function (req, res, next) {
     let password = req.query.password;
     bcrypt.hash(password, 10, function (err, hash) {
         res.send(hash);
-        console.log(hash)
     });
 });
 
@@ -93,9 +97,8 @@ router.post('/logout', function (req, res, next) {
 
 router.get('/', async function (req, res, next) {
     await pool.promise()
-        .query('SELECT * FROM admlat_posts INNER JOIN admlat_login ON admlat_posts.uid=admlat_login.id')
+        .query('SELECT admlat_posts.id, admlat_posts.heading, admlat_posts.description, admlat_login.`user` FROM admlat_posts INNER JOIN admlat_login ON admlat_posts.uid=admlat_login.id;')
         .then(([rows, fields]) => {
-            console.log(rows)
             res.render('index.njk', { title: 'Homepage', user: req.session.username, posts: rows});
         })
         .catch(err => {
@@ -122,7 +125,6 @@ router.post('/post', async function (req, res, next) {
     await pool.promise()
         .query('INSERT INTO admlat_posts (uid, heading, full_text, description) VALUES(?, ?, ?, ?)', [req.session.user, req.body.heading, req.body.fullText, req.body.description])
         .then(([rows, fields]) => {
-            console.log(rows[0])
             res.status(500).redirect("/secret");
         })
         .catch(err => {
@@ -133,19 +135,40 @@ router.post('/post', async function (req, res, next) {
 
 router.get('/fullPost/:id', async function (req, res, next) {
     
-    console.log(req.params)
+    let result;
+    let uid;
+    let nextid = undefined;
+    let previd = undefined;
+    let post;
 
     await pool.promise()
         .query('SELECT * FROM admlat_posts INNER JOIN admlat_login ON admlat_posts.uid=admlat_login.id WHERE admlat_posts.id = ?', [req.params.id])
         .then(([rows, fields]) => {
-            console.log(rows[0])
-            let result = md.renderInline(rows[0].full_text)
-            res.render('fullPost.njk', { markdownHtml: result})
+            result = md.render(rows[0].full_text)
+            uid = rows[0].uid;
+            post = rows[0];     
         })
         .catch(err => {
             console.log(err)
             return;
         });
+        await pool.promise()
+        .query('SELECT * FROM admlat_posts WHERE uid = ?', [uid])
+        .then(([rows, fields]) => {
+            rows.forEach(row => {
+                if(row.id - req.params.id < 0 && (row.id > previd || previd == undefined)){
+                    previd = row.id;
+                }
+                if(row.id - req.params.id > 0 && (row.id < previd || nextid == undefined)){
+                    nextid = row.id;
+                }
+            });
+        })
+        .catch(err => {
+            console.log(err)
+            return;
+        });
+        res.render('fullPost.njk', { markdownHtml: result, post: post, user: req.session.username, nextid: nextid, previd: previd})
 });
 
 module.exports = router;

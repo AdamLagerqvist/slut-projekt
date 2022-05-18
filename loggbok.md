@@ -18,3 +18,19 @@ Idag har jag börjat med att fixa så att man kan se fulla posts med hjälp av M
 ## vad bör jag göra nästa lektion?
 Fortsätta fixa med markdown-it och stila full posts sidan samt lite fler grejer med pagination om jag hinner.
 ___
+# Onsdag 2022-05-11
+
+## vad har jag gjort idag?
+Idag har jag haft problem med Markdown-it.
+
+## vad bör jag göra nästa lektion?
+Fortsätta fixa med markdown-it och stila full posts sidan samt lite fler grejer med pagination om jag hinner.
+___
+# Fredag 2022-05-13
+
+## Vad har jag gjort idag?
+Idag har jag har äntligen fixat mina problem med att få markdown från servern att rendera som html i vebbläsaren. lösningen var {{ fullmarkdown | safe }} resten av lektionen har jag jobbat med stilning.
+
+## Vad börj jag göra nästa lektion
+Det jag bör fokusera på nu är att fixa så att man kan redera posts och stilning
+___
