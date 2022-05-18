@@ -168,6 +168,7 @@ router.get('/fullPost/:id', async function (req, res, next) {
             console.log(err)
             return;
         });
+        console.log(post);
         res.render('fullPost.njk', { markdownHtml: result, post: post, user: req.session.username, nextid: nextid, previd: previd})
 });
 

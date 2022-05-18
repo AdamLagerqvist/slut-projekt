@@ -31,6 +31,10 @@ ___
 ## Vad har jag gjort idag?
 Idag har jag har äntligen fixat mina problem med att få markdown från servern att rendera som html i vebbläsaren. lösningen var {{ fullmarkdown | safe }} resten av lektionen har jag jobbat med stilning.
 
-## Vad börj jag göra nästa lektion
+## Vad bör jag göra nästa lektion
 Det jag bör fokusera på nu är att fixa så att man kan redera posts och stilning
 ___
+## onsdag 2022-0518
+
+## vad har jag gjor idag?
+fixat bättre pagination stila från bootstrap bland annat.

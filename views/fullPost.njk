@@ -1,18 +1,26 @@
 {% extends "layout.njk" %}
 {% block content %}
-<div class="container-md d-flex flex-column min-vh-100" style="max-width: 60vw;">
+<div class="container-md" style="max-width: 60vw;">
+    <nav aria-label="Page navigation example" style="padding-top: 1rem;">
+        <ul class="pagination">
+            {% if previd %}
+            <li class="page-item"><a class="page-link" href="/fullPost/{{ previd }}"><span aria-hidden="true">&laquo;</span></a></li>
+            {% endif %}
+            {% if nextid %}
+            <li class="page-item"><a class="page-link" href="/fullPost/{{ nextid }}"><span aria-hidden="true">&raquo;</span></a></li>
+            {% endif %}
+        </ul>
+      </nav>
     <div style="margin-bottom: 1rem;">
         {{ markdownHtml | safe }}
+        <div class="d-flex justify-content-between">
+            <p>This post was written by:</p>
+            <div class="d-flex">
+                {{ post.user }}
+                <img src="https://avatars.dicebear.com/api/miniavs/{{ post.user }}.svg" alt="profile picture" width="50"
+                    height="50" style="width: 3rem; height: 2.5rem;">
+            </div>
+        </div>
     </div>
 </div>
-<footer class="container-md" style="max-width: 60vwn; margin-top: auto;">
-    <div class="d-flex justify-content-between container-md" style="max-width: 60vw;">
-        {% if previd %}
-        <a href="/fullPost/{{ previd }}" class="btn btn-primary">prev. post by {{ user }}</a>
-        {% endif %}
-        {% if nextid %}
-        <a href="/fullPost/{{ nextid }}" class="btn btn-primary">next post by {{ user }}</a>
-        {% endif %}
-    </div>
-</footer>
 {% endblock %}
