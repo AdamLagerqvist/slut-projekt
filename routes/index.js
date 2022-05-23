@@ -37,10 +37,18 @@ router.post('/register', async function (req, res, next) {
 
         await pool.promise()
             .query('INSERT INTO admlat_login (user, password) VALUES (?,?)', [username, hash])
-            .then(([rows, fields]) => {
-                req.session.user = rows[0].id;
-                req.session.user = username;
-                res.redirect("/secret");
+            .then(async ([rows, fields]) => {
+                await pool.promise()
+                .query('SELECT id FROM admlat_login WHERE user = ?', [username])
+                .then(([rows, fields]) => {
+                    console.log(rows[0])
+                    req.session.user = rows[0];
+                    req.session.username = username;
+                    res.redirect("/secret");
+                }).catch(err => {
+                    console.log(err)
+                    res.status(500).redirect("/register?response=1");
+                });
             }).catch(err => {
                 console.log(err)
                 res.status(500).redirect("/register?response=1");
@@ -170,6 +178,35 @@ router.get('/fullPost/:id', async function (req, res, next) {
         });
         console.log(post);
         res.render('fullPost.njk', { markdownHtml: result, post: post, user: req.session.username, nextid: nextid, previd: previd})
+});
+
+router.post('/delete/:id', async function (req, res, next) {
+    
+    let is_valid_user;
+
+    await pool.promise()
+        .query('SELECT * FROM admlat_posts INNER JOIN admlat_login ON admlat_posts.uid=admlat_login.id WHERE admlat_posts.id = ?', [req.params.id])
+        .then(([rows, fields]) => {
+            is_valid_user = (rows[0].user == req.session.username);
+            console.log(rows[0])
+            console.log(is_valid_user)
+            console.log(rows[0].user)
+            console.log(req.session.username)
+        })
+        .catch(err => {
+            console.log(err)
+        });
+        if(is_valid_user){
+        await pool.promise()
+            .query('DELETE FROM admlat_posts WHERE id = ?', [req.params.id])
+            .then(([rows, fields]) => {
+                
+            })
+            .catch(err => {
+                console.log(err)
+            });
+        }
+        res.redirect("/")
 });
 
 module.exports = router;

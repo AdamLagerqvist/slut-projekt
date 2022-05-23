@@ -9,7 +9,14 @@
             <div class="card-body">
               <h5 class="card-title">{{ post.heading }}</h5>
               <p class="card-text">{{ post.description }}</p>
-              <a href="/fullPost/{{ post.id }}" class="btn btn-primary">Read full post</a>
+              <div class="d-flex justify-content-between">
+                <a href="/fullPost/{{ post.id }}" class="btn btn-primary">Read full post</a>
+                <form action="/delete/{{ post.id }}" method="post">
+                  {% if post.user == user %}
+                    <button type="submit" class="btn btn-danger">Delete post</button>
+                  {% endif %}
+                </form>
+              </div>
             </div>
           </div>
     {% endfor %}

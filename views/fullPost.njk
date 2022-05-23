@@ -11,14 +11,15 @@
             {% endif %}
         </ul>
       </nav>
-    <div style="margin-bottom: 1rem;">
+    <div style="margin-bottom: 1rem; word-wrap: break-word;">
         {{ markdownHtml | safe }}
+        <hr>
         <div class="d-flex justify-content-between">
-            <p>This post was written by:</p>
+            <p style="margin-top: auto; margin-bottom: auto;" >This post was written by:</p>
             <div class="d-flex">
-                {{ post.user }}
-                <img src="https://avatars.dicebear.com/api/miniavs/{{ post.user }}.svg" alt="profile picture" width="50"
-                    height="50" style="width: 3rem; height: 2.5rem;">
+                <p style="margin-top: auto; margin-bottom: auto; margin-right: 1rem;" >{{ post.user }}</p>
+                <img src="https://avatars.dicebear.com/api/miniavs/{{user}}.svg" alt="profile picture" width="50"
+                    height="50" style="width: 2.5rem; height: 2.5rem; background: cadetblue; border-radius: 100%;">
             </div>
         </div>
     </div>

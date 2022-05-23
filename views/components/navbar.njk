@@ -33,9 +33,9 @@
             </ul>
             {% if user %}
                 <form class="d-flex align-middle" action="/logout" method="post">
+                    <button class="btn btn-primary" type="submit" style="margin-right: 1rem;">Logout</button>
                     <img src="https://avatars.dicebear.com/api/miniavs/{{user}}.svg" alt="profile picture" width="50"
-                    height="50" style="width: 3rem; height: 2.5rem;">
-                    <button class="btn btn-primary" type="submit">Logout</button>
+                    height="50" style="width: 2.5rem; height: 2.5rem; background: cadetblue; border-radius: 100%;">
                 </form>
             {% endif %}
         </div>
