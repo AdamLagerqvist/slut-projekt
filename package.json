@@ -1,5 +1,5 @@
 {
-  "name": "cosmiska-robbotar-alc-loggin",
+  "name": "slut-projekt",
   "version": "0.0.0",
   "private": true,
   "scripts": {
@@ -22,5 +22,8 @@
   },
   "devDependencies": {
     "nodemon": "^2.0.15"
+  },
+  "engines": {
+    "node": "~14"
   }
 }
