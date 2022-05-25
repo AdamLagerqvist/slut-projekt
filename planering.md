@@ -1,6 +1,6 @@
 https://github.com/markdown-it/markdown-it
 
-blogg posts med pagination + loggin
+blogg posts med pagination så man kan bläddra mellan olika posts av samma user och så att alla posts inte finns på en sida + loggin
 databaser:
     login:
         username varchar(20)

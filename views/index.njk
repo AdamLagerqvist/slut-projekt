@@ -1,6 +1,27 @@
 {% extends "layout.njk" %}
 {% block  content %}
     <div class="container-md">
+      <nav aria-label="...">
+        <ul class="pagination pagination-sm">
+          <li class="page-item"><a class="page-link" href="/content/1">1</a></li>
+          <li class="page-item disabled">
+            <a class="page-link" href="#">..</a>
+          </li>
+          {% if prevPage >= 1 %}
+            <li class="page-item"><a class="page-link" href="/content/{{ prevPage }}"><span aria-hidden="true">{{ prevPage }}</span></a></li>
+          {% endif %}
+          <li class="page-item disabled">
+            <a class="page-link" href="#">{{ page }}</a>
+          </li>
+          {% if nextPage <= lastPage %}
+            <li class="page-item"><a class="page-link" href="/content/{{ nextPage }}"><span aria-hidden="true">{{ nextPage }}</span></a></li>
+          {% endif %}
+          <li class="page-item disabled">
+            <a class="page-link" href="#">..</a>
+          </li>
+          <li class="page-item"><a class="page-link" href="/content/{{ lastPage }}">{{ lastPage }}</a></li>
+        </ul>
+      </nav>
     {% for post in posts %}
         <div class="card" style="margin-top: 1rem;">
             <div class="card-header">

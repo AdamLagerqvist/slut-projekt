@@ -103,16 +103,34 @@ router.post('/logout', function (req, res, next) {
     res.redirect("/login");
 });
 
-router.get('/', async function (req, res, next) {
+router.get('/content/:page', async function (req, res, next) {
     await pool.promise()
         .query('SELECT admlat_posts.id, admlat_posts.heading, admlat_posts.description, admlat_login.`user` FROM admlat_posts INNER JOIN admlat_login ON admlat_posts.uid=admlat_login.id;')
         .then(([rows, fields]) => {
-            res.render('index.njk', { title: 'Homepage', user: req.session.username, posts: rows});
+            let page = req.params.page;
+            console.log(page);
+            let lastPage = Math.trunc(rows.length/6);
+            let lastPageItems = rows.length % 6;
+            if(lastPageItems != 0){
+                lastPage++;
+            }
+            if(page > lastPage){ page = lastPage }
+            if(page < 1){ page = 1 }
+            if(page != lastPage){
+                var items = rows.slice((page-1) * 6, page * 6 - 1);
+            }else{
+                var items = rows.slice((page-1) * 6, rows.length);
+            }
+            res.render('index.njk', { title: 'Homepage', user: req.session.username, posts: items, lastPage: lastPage, page: page, nextPage: (page-0+1), prevPage: (page-1)});
         })
         .catch(err => {
             console.log(err)
-            res.status(500).redirect("/secret");
+            res.status(500).redirect("/index.njk");
         });
+});
+
+router.get('/', async function (req, res, next) {
+    res.redirect("/content/1");
 });
 
 router.get('/login', function (req, res, next) {
