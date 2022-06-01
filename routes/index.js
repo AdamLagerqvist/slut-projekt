@@ -90,13 +90,6 @@ router.post('/login', async function (req, res, next) {
         });
 });
 
-router.get('/test', function (req, res, next) {
-    let password = req.query.password;
-    bcrypt.hash(password, 10, function (err, hash) {
-        res.send(hash);
-    });
-});
-
 router.post('/logout', function (req, res, next) {
     req.session.user = null;
     req.session.username = null;
